@@ -96,7 +96,7 @@ img { max-width: 100%; }
 .brand {
   align-items: flex-end;
 }
-.bidfire-logo {
+.firebid-logo {
   height: 38px;
   width: auto;
   display: block;
@@ -176,6 +176,30 @@ img { max-width: 100%; }
 .btn-dark:hover { background: #2a2a2a; }
 .btn-block { width: 100%; padding: 14px 18px; }
 .nav-cta { margin-left: 8px; padding: 10px 14px; }
+.scroll-demo {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 12;
+  background: var(--ink);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  box-shadow: 0 12px 30px rgba(17, 17, 17, 0.18);
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+.scroll-demo.is-on {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
 
 .hero, .customers, .integrations, .product, .how, .proof, .cta, .legal {
   width: min(var(--max), calc(100% - 48px));
@@ -707,7 +731,7 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
   gap: 22px;
 }
 .footer-brands { align-items: flex-end; }
-.footer-brands .bidfire-logo { height: 32px; }
+.footer-brands .firebid-logo { height: 32px; }
 .footer-brands .northops-mark { height: 16px; }
 .footer-brands .byline { margin-bottom: 2px; }
 .footer-links {
@@ -866,7 +890,7 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
 }
 @media (max-width: 720px) {
   .nav { padding: 0 16px; }
-  .bidfire-logo { height: 30px; }
+  .firebid-logo { height: 30px; }
   .northops-mark { height: 14px; }
   .byline-word { font-size: 12px; }
   .customers { gap: 20px; }
@@ -886,6 +910,7 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
   }
   .nav nav.open { display: flex; }
   .nav-cta { margin: 8px 12px 0; }
+  .scroll-demo { right: 16px; bottom: 16px; }
   .hero, .customers, .integrations, .product, .how, .proof, .cta, .legal, .who {
     width: min(var(--max), calc(100% - 32px));
   }
@@ -909,4 +934,5 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-snap-type: none; }
   .role-stop { scroll-snap-align: none; min-height: 0; }
+  .scroll-demo { transition: none; }
 }

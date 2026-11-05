@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { NorthOpsLogo, Wordmark } from "./components/Logo";
 import { FlowAnimation } from "./components/FlowAnimation";
 import {
@@ -41,7 +41,7 @@ const steps = [
   {
     n: 2 as const,
     title: "Import",
-    body: "Bring in the finished HydraCAD or AutoSPRINK design software file. BidFire builds the stocklist from it.",
+    body: "Bring in the finished HydraCAD or AutoSPRINK design software file. FireBid builds the stocklist from it.",
   },
   {
     n: 3 as const,
@@ -67,7 +67,7 @@ const roleStops = [
     id: "designers",
     label: "Designers",
     title: "Hand off the finished design.",
-    body: "HydraCAD and AutoSPRINK stay the design software. BidFire reads the finished file, so designers are not rebuilding a price book or re-counting for the estimate.",
+    body: "HydraCAD and AutoSPRINK stay the design software. FireBid reads the finished file, so designers are not rebuilding a price book or re-counting for the estimate.",
     Mock: DesignerMock,
   },
   {
@@ -100,6 +100,31 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
   const [error, setError] = useState("");
+  const [showScrollDemo, setShowScrollDemo] = useState(false);
+  const heroDemoRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (page !== "home") {
+      setShowScrollDemo(false);
+      return;
+    }
+    const heroDemo = heroDemoRef.current;
+    const demo = document.getElementById("demo");
+    if (!heroDemo) return;
+    let heroGone = false;
+    let demoVisible = false;
+    const update = () => setShowScrollDemo(heroGone && !demoVisible);
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.target === heroDemo) heroGone = !entry.isIntersecting;
+        if (entry.target === demo) demoVisible = entry.isIntersecting;
+      }
+      update();
+    });
+    observer.observe(heroDemo);
+    if (demo) observer.observe(demo);
+    return () => observer.disconnect();
+  }, [page]);
 
   function go(next: Page) {
     setPage(next);
@@ -192,7 +217,12 @@ export default function App() {
                 Bid software that turns a finished sprinkler design into a priced,
                 ready-to-send bid.
               </p>
-              <button type="button" className="btn btn-dark" onClick={() => onNav("#demo")}>
+              <button
+                type="button"
+                className="btn btn-dark"
+                ref={heroDemoRef}
+                onClick={() => onNav("#demo")}
+              >
                 Book a demo
               </button>
             </div>
@@ -230,7 +260,7 @@ export default function App() {
 
           <section className="product" id="product">
             <p className="brand-lockup">
-              <i /> BidFire
+              <i /> FireBid
             </p>
             <h2>Get your bid out first.</h2>
             <p className="lede">
@@ -333,7 +363,7 @@ export default function App() {
           </section>
 
           <section className="cta" id="pricing">
-            <h2>See BidFire on your next bid.</h2>
+            <h2>See FireBid on your next bid.</h2>
             <p>
               Bring a recent design and we'll walk it from stocklist to priced bid.
               Pricing is built around your team, so talk to us and we'll scope it with
@@ -427,6 +457,17 @@ export default function App() {
           <span>© 2026 NorthOps LLC</span>
         </div>
       </footer>
+      {page === "home" ? (
+        <button
+          type="button"
+          className={showScrollDemo ? "scroll-demo is-on" : "scroll-demo"}
+          tabIndex={showScrollDemo ? 0 : -1}
+          aria-hidden={!showScrollDemo}
+          onClick={() => onNav("#demo")}
+        >
+          Book a demo
+        </button>
+      ) : null}
     </>
   );
 }
@@ -436,7 +477,7 @@ function Privacy() {
     <article>
       <h1>Privacy</h1>
       <p>
-        BidFire is a product of NorthOps LLC. This page describes how the marketing
+        FireBid is a product of NorthOps LLC. This page describes how the marketing
         site handles information you give us.
       </p>
       <h2>What you send</h2>
@@ -449,7 +490,7 @@ function Privacy() {
       <h2>Product data</h2>
       <p>
         Job files, vendor pricing, and labor rates are not collected on this page.
-        Those stay inside the BidFire product under the agreement you sign with
+        Those stay inside the FireBid product under the agreement you sign with
         NorthOps.
       </p>
       <h2>Contact</h2>
@@ -463,7 +504,7 @@ function Terms() {
     <article>
       <h1>Terms</h1>
       <p>
-        This website introduces BidFire, bid software for fire protection
+        This website introduces FireBid, bid software for fire protection
         contractors, from NorthOps LLC. Browsing the site doesn't create a customer
         agreement.
       </p>
@@ -480,7 +521,7 @@ function Terms() {
         or hours saved.
       </p>
       <h2>Contact</h2>
-      <p>Use the demo form to talk with NorthOps about using BidFire.</p>
+      <p>Use the demo form to talk with NorthOps about using FireBid.</p>
     </article>
   );
 }

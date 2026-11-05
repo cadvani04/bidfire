@@ -30,7 +30,7 @@ const LINES = [
 ];
 
 const RACE = [
-  { name: "BidFire", state: "Sent", pct: "100%", pace: "fast" },
+  { name: "FireBid", state: "Sent", pct: "100%", pace: "fast" },
   { name: "Other bid", state: "Still pricing", pct: "46%", pace: "slow" },
   { name: "Other bid", state: "Still counting", pct: "28%", pace: "slower" },
   { name: "Other bid", state: "Still in design", pct: "14%", pace: "slowest" },
@@ -130,7 +130,7 @@ export function FlowAnimation() {
 
         <div className={`scene scene-bid ${sent ? "is-sent" : ""}`} aria-hidden={!passed(stage, "stocklist") || stage === "race"}>
           <header>
-            <strong>BidFire</strong>
+            <strong>FireBid</strong>
             <span className={sent ? "pill pill-green" : "pill"}>{sent ? "Sent" : "Stocklist"}</span>
           </header>
           <ul>
