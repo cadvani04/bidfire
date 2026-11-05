@@ -25,7 +25,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-snap-type: y proximity; }
 #product, #how-it-works, #integrations, #pricing, #demo, #main {
   scroll-margin-top: 88px;
 }
@@ -543,11 +543,17 @@ img { max-width: 100%; }
   font-size: 15.5px;
 }
 
-.who-band {
-  background: var(--soft);
-  margin-top: 96px;
-  padding: 88px 0;
+.roles { margin-top: 48px; }
+.role-stop {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  padding: 88px 0 48px;
+  box-sizing: border-box;
 }
+.role-stop:nth-child(even) { background: var(--soft); }
 .who {
   width: min(1120px, calc(100% - 48px));
   margin: 0 auto;
@@ -556,19 +562,6 @@ img { max-width: 100%; }
   gap: 56px;
   align-items: center;
 }
-.audience { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; margin: 8px 0 22px; }
-.audience button {
-  background: none;
-  border: 0;
-  border-left: 3px solid transparent;
-  padding: 2px 0 2px 14px;
-  margin-left: -17px;
-  font-size: clamp(28px, 3vw, 36px);
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  color: #cfcfcf;
-}
-.audience button.on { color: var(--ink); border-left-color: var(--ink); }
 .who h2 {
   font-size: clamp(28px, 3vw, 36px);
   margin-bottom: 12px;
@@ -864,7 +857,7 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
 
 @media (max-width: 980px) {
   .hero, .who, .proof, .mock-body, .fields { grid-template-columns: 1fr; }
-  .who-band { padding: 56px 0; }
+  .role-stop { padding: 72px 0; }
   .integrations ul { grid-template-columns: repeat(3, 1fr); }
   .how ol, .columns { grid-template-columns: 1fr 1fr; }
   .who { width: min(1120px, calc(100% - 40px)); }
@@ -896,7 +889,7 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
   .hero, .customers, .integrations, .product, .how, .proof, .cta, .legal, .who {
     width: min(var(--max), calc(100% - 32px));
   }
-  .who-band { margin-top: 64px; }
+  .roles { margin-top: 32px; }
   .hero { padding-top: 36px; }
   .how ol, .columns, .integrations ul { grid-template-columns: 1fr; }
   .hero h1 { font-size: 52px; }
@@ -914,5 +907,6 @@ input:focus, select:focus { border-color: #bbb; background: #fff; box-shadow: 0 
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
+  html { scroll-snap-type: none; }
+  .role-stop { scroll-snap-align: none; min-height: 0; }
 }

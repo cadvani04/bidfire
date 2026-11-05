@@ -2,9 +2,11 @@ import { FormEvent, useState } from "react";
 import { NorthOpsLogo, Wordmark } from "./components/Logo";
 import { FlowAnimation } from "./components/FlowAnimation";
 import {
+  DesignerMock,
   EstimatorMock,
   MismatchMock,
   PipelineMock,
+  PurchasingMock,
   StepArt,
 } from "./components/ProductMocks";
 
@@ -53,22 +55,41 @@ const steps = [
   },
 ];
 
-const audiences = {
-  estimators: {
+const roleStops = [
+  {
+    id: "estimators",
+    label: "Estimators",
     title: "Price the design you already finished.",
-    body: "No re-counting heads, pipe, and fittings. The stocklist comes off the design software, priced through live supplier APIs and your labor rates, with mismatches flagged before the bid goes out.",
+    body: "No re-counting heads, pipe, and fittings. The stocklist comes off the design software and prices itself from the live price book, with mismatches flagged before the bid goes out.",
+    Mock: EstimatorMock,
   },
-  owners: {
+  {
+    id: "designers",
+    label: "Designers",
+    title: "Hand off the finished design.",
+    body: "HydraCAD and AutoSPRINK stay the design software. BidFire reads the finished file, so designers are not rebuilding a price book or re-counting for the estimate.",
+    Mock: DesignerMock,
+  },
+  {
+    id: "purchasing",
+    label: "Purchasing managers",
+    title: "Never change the price book again.",
+    body: "Etna, Galloup, Viking, and Core & Main are live APIs. Contract prices come in on their own, so the price book stays current without another manual update.",
+    Mock: PurchasingMock,
+  },
+  {
+    id: "owners",
+    label: "Owners",
     title: "More bids out with the team you have.",
-    body: "Bid on pricing you trust, see every bid in one place, and know your win rate without digging through spreadsheets.",
+    body: "Estimators, designers, and purchasing stay on one bid. You see every job from design to won or lost, priced from the live price book.",
+    Mock: PipelineMock,
   },
-};
+];
 
-type Audience = keyof typeof audiences;
 type Page = "home" | "privacy" | "terms";
-type Role = "Estimator" | "Owner" | "Designer" | "Project manager" | "Other";
+type Role = "Estimator" | "Designer" | "Purchasing manager" | "Owner" | "Project manager" | "Other";
 
-const roles: Role[] = ["Estimator", "Owner", "Designer", "Project manager", "Other"];
+const roles: Role[] = ["Estimator", "Designer", "Purchasing manager", "Owner", "Project manager", "Other"];
 
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -77,7 +98,6 @@ function scrollToId(id: string) {
 export default function App() {
   const [page, setPage] = useState<Page>("home");
   const [menuOpen, setMenuOpen] = useState(false);
-  const [audience, setAudience] = useState<Audience>("owners");
   const [sent, setSent] = useState<string | null>(null);
   const [error, setError] = useState("");
 
@@ -247,39 +267,21 @@ export default function App() {
             </div>
           </section>
 
-          <section className="who-band">
-            <div className="who">
-            <div className="who-copy">
-              <p className="eyebrow eyebrow-left">Who it's for</p>
-              <div className="audience" role="tablist" aria-label="Who it's for">
-                {(Object.keys(audiences) as Audience[]).map((key) => (
-                  <button
-                    key={key}
-                    type="button"
-                    role="tab"
-                    id={`tab-${key}`}
-                    aria-selected={audience === key}
-                    aria-controls="audience-panel"
-                    className={audience === key ? "on" : ""}
-                    onClick={() => setAudience(key)}
-                  >
-                    {key === "estimators" ? "Estimators" : "Owners"}
-                  </button>
-                ))}
-              </div>
-              <div
-                id="audience-panel"
-                role="tabpanel"
-                aria-labelledby={`tab-${audience}`}
-              >
-                <h2>{audiences[audience].title}</h2>
-                <p>{audiences[audience].body}</p>
-              </div>
-            </div>
-            <div className="frame frame-soft">
-              {audience === "owners" ? <PipelineMock /> : <EstimatorMock />}
-            </div>
-            </div>
+          <section className="roles" aria-label="Who it's for">
+            {roleStops.map((role) => (
+              <article className="role-stop" id={role.id} key={role.id}>
+                <div className="who">
+                  <div className="who-copy">
+                    <p className="eyebrow eyebrow-left">{role.label}</p>
+                    <h2>{role.title}</h2>
+                    <p>{role.body}</p>
+                  </div>
+                  <div className="frame frame-soft">
+                    <role.Mock />
+                  </div>
+                </div>
+              </article>
+            ))}
           </section>
 
           <section className="how" id="how-it-works">

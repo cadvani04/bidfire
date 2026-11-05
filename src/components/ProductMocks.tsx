@@ -234,6 +234,67 @@ export function EstimatorMock() {
   );
 }
 
+export function DesignerMock() {
+  return (
+    <div className="mock" aria-hidden="true">
+      <div className="mock-top">
+        <div>
+          <p className="mock-kicker">Design software</p>
+          <h3>Finished file, ready to price</h3>
+        </div>
+        <span className="pill pill-green">Handed off</span>
+      </div>
+      <div className="art">
+        <div className="file-card">
+          <span className="file-ext">HCAD</span>
+          <div>
+            <strong>Riverside_Medical.hcad</strong>
+            <span>HydraCAD design software</span>
+          </div>
+        </div>
+        <div className="file-card">
+          <span className="file-ext alt">AS</span>
+          <div>
+            <strong>Or an AutoSPRINK file</strong>
+            <span>Same handoff, stocklist from the design</span>
+          </div>
+        </div>
+        <div className="art-row">
+          <span>Price book</span>
+          <em>Untouched</em>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function PurchasingMock() {
+  const suppliers = ["Etna", "Galloup", "Viking", "Core & Main"];
+  return (
+    <div className="mock" aria-hidden="true">
+      <div className="mock-top">
+        <div>
+          <p className="mock-kicker">Purchasing</p>
+          <h3>Price book stays current</h3>
+        </div>
+        <span className="pill pill-green">Live</span>
+      </div>
+      <div className="art">
+        {suppliers.map((name) => (
+          <div className="art-row" key={name}>
+            <span>{name}</span>
+            <em>Live API</em>
+          </div>
+        ))}
+        <div className="art-row">
+          <span>Manual price book edits</span>
+          <em>None</em>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StepArt({ step }: { step: 1 | 2 | 3 | 4 }) {
   if (step === 1) {
     return (
