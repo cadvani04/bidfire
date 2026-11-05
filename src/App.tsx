@@ -26,6 +26,57 @@ const tools = [
   { name: "Core & Main", kind: "Live API", src: "/logos/core-and-main.svg" },
 ];
 
+const accounting = [
+  { name: "QuickBooks Online", src: "/accounting/quickbooks-online.svg" },
+  { name: "QuickBooks Desktop", src: "/accounting/quickbooks-desktop.svg" },
+  { name: "QuickBooks Enterprise", src: "/accounting/quickbooks-enterprise.svg" },
+  { name: "Xero", src: "/accounting/xero.svg" },
+  { name: "FreshBooks", src: "/accounting/freshbooks.png" },
+  { name: "Sage 50", src: "/accounting/sage-50.svg" },
+  { name: "Sage 100", src: "/accounting/sage-100.svg" },
+  { name: "Sage Business Cloud Accounting", src: "/accounting/sage-business-cloud-accounting.svg" },
+  { name: "Zoho Books", src: "/accounting/zoho-books.svg" },
+  { name: "Wave", src: "/accounting/wave.png" },
+  { name: "MYOB", src: "/accounting/myob.svg" },
+  { name: "Reckon", src: "/accounting/reckon.png" },
+  { name: "FreeAgent", src: "/accounting/freeagent.png" },
+  { name: "Kashoo", src: "/accounting/kashoo.png" },
+  { name: "Patriot Accounting", src: "/accounting/patriot-accounting.png" },
+  { name: "AccountEdge", src: "/accounting/accountedge.png" },
+  { name: "Odoo", src: "/accounting/odoo.svg" },
+  { name: "KashFlow", src: "/accounting/kashflow.svg" },
+  { name: "Clear Books", src: "/accounting/clear-books.png" },
+  { name: "Manager", src: "/accounting/manager.png" },
+  { name: "ZipBooks", src: "/accounting/zipbooks.png" },
+  { name: "OneUp", src: "/accounting/oneup.png" },
+  { name: "Akaunting", src: "/accounting/akaunting.svg" },
+  { name: "BILL", src: "/accounting/bill.png" },
+  { name: "Melio", src: "/accounting/melio.png" },
+  { name: "AvidXchange", src: "/accounting/avidxchange.png" },
+  { name: "Tipalti", src: "/accounting/tipalti.png" },
+  { name: "Expensify", src: "/accounting/expensify.svg" },
+  { name: "SAP Concur", src: "/accounting/sap-concur.svg" },
+  { name: "Blackbaud", src: "/accounting/blackbaud.png" },
+  { name: "MIP Fund Accounting", src: "/accounting/mip-fund-accounting.png" },
+  { name: "TallyPrime", src: "/accounting/tallyprime.png" },
+  { name: "Busy Accounting", src: "/accounting/busy-accounting.png" },
+  { name: "Vyapar", src: "/accounting/vyapar.png" },
+  { name: "AlignBooks", src: "/accounting/alignbooks.png" },
+  { name: "Saasu", src: "/accounting/saasu.png" },
+  { name: "MoneyWorks", src: "/accounting/moneyworks.png" },
+  { name: "GnuCash", src: "/accounting/gnucash.png" },
+  { name: "Quicken", src: "/accounting/quicken.png" },
+  { name: "Harvest", src: "/accounting/harvest.png" },
+  { name: "HoneyBook", src: "/accounting/honeybook.png" },
+  { name: "Puzzle", src: "/accounting/puzzle.png" },
+  { name: "Rillet", src: "/accounting/rillet.png" },
+  { name: "Campfire", src: "/accounting/campfire.png" },
+  { name: "FloQast", src: "/accounting/floqast.png" },
+  { name: "BlackLine", src: "/accounting/blackline.png" },
+  { name: "Sage 50cloud", src: "/accounting/sage-50cloud.svg" },
+  { name: "Zoho Finance Plus", src: "/accounting/zoho-finance-plus.svg" },
+];
+
 const customers = [
   { name: "Total Fire Protection", src: "/clients/total-fire-protection.png" },
   { name: "Victory Fire Protection", src: "/clients/victory-fire-protection.png" },
@@ -111,19 +162,17 @@ export default function App() {
     const heroDemo = heroDemoRef.current;
     const demo = document.getElementById("demo");
     if (!heroDemo) return;
-    let heroGone = false;
-    let demoVisible = false;
-    const update = () => setShowScrollDemo(heroGone && !demoVisible);
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.target === heroDemo) heroGone = !entry.isIntersecting;
-        if (entry.target === demo) demoVisible = entry.isIntersecting;
-      }
-      update();
-    });
-    observer.observe(heroDemo);
-    if (demo) observer.observe(demo);
-    return () => observer.disconnect();
+    const update = () => {
+      const heroBox = heroDemo.getBoundingClientRect();
+      const demoBox = demo?.getBoundingClientRect();
+      const heroGone = heroBox.bottom < 0;
+      const demoVisible = demoBox ? demoBox.top < window.innerHeight && demoBox.bottom > 0 : false;
+      const pastDemo = demoBox ? demoBox.bottom < 0 : false;
+      setShowScrollDemo(heroGone && !demoVisible && !pastDemo);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
   }, [page]);
 
   function go(next: Page) {
@@ -263,11 +312,35 @@ export default function App() {
               <i /> FireBid
             </p>
             <h2>Get your bid out first.</h2>
-            <p className="lede">
-              The stocklist comes straight from HydraCAD or AutoSPRINK design software,
-              priced through live supplier APIs, so you never update a price book again.
-              Every bid tracked in one place, from design to sent.
-            </p>
+            <ol className="product-steps">
+              <li>
+                <span>01</span>
+                <div>
+                  <h3>Import the finished design.</h3>
+                  <p>Drop in the HydraCAD or AutoSPRINK file. FireBid builds the stocklist from it.</p>
+                </div>
+              </li>
+              <li>
+                <span>02</span>
+                <div>
+                  <h3>Price it from the live APIs.</h3>
+                  <p>
+                    Etna, Galloup, Viking, and Core & Main stay current, so you never update a
+                    price book again.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span>03</span>
+                <div>
+                  <h3>Send the bid.</h3>
+                  <p>Track it in one place, from design to sent, through won or lost.</p>
+                </div>
+              </li>
+            </ol>
+            <button type="button" className="btn btn-dark" onClick={() => onNav("#demo")}>
+              Book a demo
+            </button>
             <div className="frame frame-wide">
               <MismatchMock />
             </div>
@@ -428,6 +501,23 @@ export default function App() {
                 </form>
               )}
             </div>
+          </section>
+
+          <section className="books" aria-label="Accounting software">
+            <p className="eyebrow">Accounting</p>
+            <h2>Posts into the accounting software you already run.</h2>
+            <p>
+              The same accounting systems NorthOps posts a matched buy into. Lines that
+              match post. Exceptions stay held.
+            </p>
+            <ul>
+              {accounting.map((book) => (
+                <li key={book.name}>
+                  <img src={book.src} alt="" />
+                  <span>{book.name}</span>
+                </li>
+              ))}
+            </ul>
           </section>
         </main>
       ) : (
